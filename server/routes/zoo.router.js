@@ -16,4 +16,20 @@ pool.query(queryText)
 })
 });
 
+router.post("/add", (req, res) => {
+    let newSpecies = req.body.species;
+    let newClass = parseInt(req.body.class);
+    console.log('req.body is:', newSpecies, newClass);
+
+    const queryText=`INSERT INTO "species" ("species_name", "class_id") VALUES ($1, $2);`;
+    pool.query(queryText, [newSpecies, newClass])
+    .then(() => {
+        res.sendStatus(201);
+    })
+    .catch(error => {
+        console.log('error completing INSERT INTO query', error);
+        res.sendStatus(500);
+    });
+});
+
 module.exports = router;

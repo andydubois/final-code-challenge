@@ -16,6 +16,7 @@ import axios from "axios";
 function* rootSaga() {
     // YOUR CODE HERE
     yield takeEvery("GET_ZOO_ANIMALS", getAnimals)
+    yield takeEvery("ADD_ANIMAL", addAnimal)
 }
 
 
@@ -30,6 +31,18 @@ function* getAnimals(action) {
         })
     } catch (error) {
         console.log("error in the animals GET client side", error);
+    }
+}
+
+function* addAnimal(action) {
+    console.log("client side animal POST, adding animal", action.payload);
+    try {
+        yield axios.post("/zoo/add", action.payload);
+        yield put ({
+            type: "GET_ZOO_ANIMALS"
+        });
+    } catch(error) {
+        console.log('error in POST', error);
     }
 }
 
